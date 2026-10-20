@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS groups(
+    chat_id INTEGER PRIMARY KEY,
+    "group" INTEGER
+);
