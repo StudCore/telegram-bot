@@ -1,25 +1,29 @@
 import sqlite3
+from contextlib import closing
+import os
 
-DB_PATH = "main.db"
+DB_PATH = os.path.join(os.path.dirname(__file__), "main.db")
 
 def get_connection():
 
     return sqlite3.connect(DB_PATH)
 
-def set_group_by_chat_id(chat_id, group):
+def execute(request, params = ()):
 
-    with get_connection() as conn:
+    with closing(get_connection()) as conn:
+        with conn:
+            cur = conn.execute(request, params)
+            conn.commit()
+            return cur.lastrowid
 
-        conn.executescript(
-            'INSERT INTO groups(chat_id, "group") VALUES(?, ?)',
-            (chat_id, group)
-        )
+def fetch_all(request, params=()):
 
+    with closing(get_connection()) as conn:
+        cur = conn.execute(request, params)
+        return cur.fetchall()
 
-def get_all_groups(chat_id, group):
+def fetch_one(request, params=()):
 
-    with get_connection() as conn:
-
-        conn.executescript(
-            'SELECT * FROM groups'
-        )
+    with closing(get_connection()) as conn:
+        cur = conn.execute(request, params)
+        return cur.fetchone()

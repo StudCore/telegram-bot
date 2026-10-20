@@ -1,4 +1,14 @@
 CREATE TABLE IF NOT EXISTS groups(
-    chat_id INTEGER PRIMARY KEY,
-    "group" INTEGER
+    user_id INTEGER PRIMARY KEY,
+    "group" INTEGER NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS black_list(
+    user_id INTEGER UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS message_log(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    sent_at INTEGER NOT NULL
+)
